@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confession Room</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h2>All Confession</h2>
+    <div id="confession-list">
+      <!-- Confession cards will be dynamically generated here -->
+    </div>
+    <p><a href="/home.html">Kembali</a></p>
+  </div>
+  
+   
+
+  <script>
+   
+   // Fetch confessions from localStorage
+let confessions = JSON.parse(localStorage.getItem('confessions')) || [];
+
+// If reactions are not saved in confessions, initialize it
+confessions = confessions.map(confession => ({
+  ...confession,
+  reactions: confession.reactions || { '👍': 0, '❤️': 0, '😂': 0 },
+  replies: confession.replies || [], // Initialize replies if not present
+}));
+
+// Reference to the confession list container
+const confessionList = document.getElementById('confession-list');
+
+// Save updated confessions back to localStorage
+function saveConfessions() {
+  localStorage.setItem('confessions', JSON.stringify(confessions));
+}
+
+// Display each confession as a card with reactions and reply functionality
+function renderConfessions() {
+  confessionList.innerHTML = ''; // Clear the current confession list
+
+  confessions.forEach((confession, index) => {
+    const confessionItem = document.createElement('div');
+    confessionItem.classList.add('confession-card');
+    
+    const confessionText = document.createElement('p');
+    confessionText.textContent = confession.text;
+
+    const confessionDate = document.createElement('div');
+    confessionDate.classList.add('confession-date');
+    confessionDate.textContent = `Dikirim pada: ${confession.date}`;
+
+    confessionItem.appendChild(confessionText);
+    confessionItem.appendChild(confessionDate);
+
+    // Add reactions
+    const reactionsDiv = document.createElement('div');
+    reactionsDiv.classList.add('reactions');
+
+    const reactions = ['👍', '❤️', '😂'];
+    reactions.forEach(reaction => {
+      const reactionBtn = document.createElement('button');
+      reactionBtn.classList.add('reaction-btn');
+      reactionBtn.innerHTML = `${reaction} <span class="reaction-count">${confession.reactions[reaction]}</span>`;
+
+      // Check if the user has already reacted to this confession
+      const userReactionKey = `userReaction_${index}`;
+      const userReaction = localStorage.getItem(userReactionKey);
+
+      if (userReaction) {
+        // Disable the button if the user already reacted
+        reactionBtn.disabled = true;
+      }
+
+      // Add event listener to increment reaction count and show floating emoji
+      reactionBtn.addEventListener('click', function() {
+        if (!userReaction) {
+          // Increment the reaction count
+          confession.reactions[reaction]++;
+          this.querySelector('.reaction-count').textContent = confession.reactions[reaction];
+
+          // Store the user's reaction in localStorage
+          localStorage.setItem(userReactionKey, reaction);
+
+          // Create floating emoji
+          const floatingEmoji = document.createElement('span');
+          floatingEmoji.classList.add('floating-emoji');
+          floatingEmoji.textContent = reaction;
+
+          // Position the emoji at the button's position
+          const rect = this.getBoundingClientRect();
+          floatingEmoji.style.left = `${rect.left + window.scrollX + (rect.width / 2)}px`;
+          floatingEmoji.style.top = `${rect.top + window.scrollY - 30}px`; // Offset to appear above the button
+
+          // Append the emoji to the body
+          document.body.appendChild(floatingEmoji);
+
+          // Remove the emoji after animation ends
+          setTimeout(() => {
+            floatingEmoji.remove();
+          }, 1000); // Emoji will be removed after 1 second
+
+          // Save updated confessions to localStorage
+          saveConfessions();
+
+          // Disable the button after reaction
+          this.disabled = true;
+        }
+      });
+
+      reactionsDiv.appendChild(reactionBtn);
+    });
+
+    confessionItem.appendChild(reactionsDiv);
+
+    // Minimalist Reply Section
+    const replyForm = document.createElement('div');
+    replyForm.classList.add('reply-form-minimal');
+
+    const replyInput = document.createElement('input');
+    replyInput.classList.add('reply-input-minimal');
+    replyInput.placeholder = 'Tulis reply di sini...';
+    replyInput.style.border = 'none';  // Hide border
+    replyInput.style.borderBottom = '1px solid #ccc'; // Only show bottom border
+    replyInput.style.outline = 'none'; // Remove default outline
+
+    const replySendIcon = document.createElement('span');
+    replySendIcon.classList.add('reply-send-icon');
+    
+    // Using SVG for black arrow icon
+    replySendIcon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right" viewBox="0 0 24 24">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    `; // Black right arrow
+
+    replySendIcon.addEventListener('click', function() {
+      const replyText = replyInput.value.trim();
+      if (replyText !== '') {
+        confession.replies.push(replyText);
+        replyInput.value = ''; // Clear the input field
+        saveConfessions(); // Save the updated replies to localStorage
+        renderConfessions(); // Re-render to display the new reply
+      }
+    });
+
+    replyForm.appendChild(replyInput);
+    replyForm.appendChild(replySendIcon);
+
+    confessionItem.appendChild(replyForm);
+
+    // Display existing replies
+    if (confession.replies.length > 0) {
+      const repliesList = document.createElement('div');
+      repliesList.classList.add('replies-list-minimal');
+
+      confession.replies.forEach(reply => {
+        const replyItem = document.createElement('div');
+        replyItem.classList.add('reply-item-minimal');
+        
+        const replyText = document.createElement('p');
+        replyText.textContent = reply;
+
+        replyItem.appendChild(replyText);
+        repliesList.appendChild(replyItem);
+      });
+
+      confessionItem.appendChild(repliesList);
+    }
+
+    confessionList.appendChild(confessionItem);
+  });
+}
+
+// Render confessions when the page loads
+renderConfessions();
+
+// Clear Button: Delete all confessions from localStorage and UI
+document.getElementById('clear-confessions').addEventListener('click', function() {
+  // Clear confessions in localStorage
+  localStorage.removeItem('confessions');
+  
+  // Clear confessions array and re-render the empty list
+  confessions = [];
+  renderConfessions();
+});
+
+
+  </script>
+</body>
+</html>

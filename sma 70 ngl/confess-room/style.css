@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+:root {
+  --gradient: linear-gradient(90deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%);
+}
+
+
+body {
+  font-family: 'outfit';
+  background-color: #f4f4f9;
+  min-height: 100vh;
+  background-color: #eaeaea;
+  background-image: var(--gradient);
+  background-size: 200%;
+  animation: gradient-animation 4s infinite alternate;
+  padding: 20px;
+  margin: 0;
+  
+}
+
+@keyframes gradient-animation {
+  0% {
+      background-position: left;
+  }
+
+  100% {
+      background-position: right;
+  }
+}
+
+/* Confession Box Styles */
+.confession-box {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+textarea {
+  font-family: 'outfit';  
+  width: 100%;
+  height: 100px;
+  padding: 10px 0 0 10px ;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: rgb(240, 144, 160);
+  color: white;
+  margin-left: 40%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+a {
+  font-size: 15px;
+  text-decoration: none;
+
+}
+
+
+
+/* Confession Room Styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h2 {
+  font-family: 'outfit';
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+  color:  rgb(224, 100, 120);
+}
+
+/* Card Styles */
+.confession-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  transition: transform 0.2s ease;
+}
+
+.confession-card:hover {
+  transform: translateY(-5px);
+}
+
+.confession-date {
+  font-size: 0.8em;
+  color: #888;
+  margin-top: 10px;
+  text-align: right;
+}
+
+/* Reaction Buttons */
+.reactions {
+  display: flex;
+  gap: 10px;
+
+}
+
+.reaction-btn {
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.reaction-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.reaction-count {
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+/* Previous Confession - Color Pink */
+.previous-confession {
+  background-color: #ffcccb; /* Light pink background for the previous confession */
+}
+
+/* Button container - Centered Clear Button */
+.button-container {
+  text-align: center; /* Center align all buttons in this container */
+  margin-top: 20px;
+}
+
+.clear-btn {
+  padding: 10px 20px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.clear-btn:hover {
+  background-color: #ff3333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .confession-card {
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  textarea {
+    height: 80px;
+  }
+
+  button {
+    width: 100%;
+   margin-left: 0;
+  }
+
+  a {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
+
+p a {
+  text-align: center;
+}

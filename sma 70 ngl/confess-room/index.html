@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confession Box</title>
+  <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="confession-box">
+    <h2>Confession Room</h2>
+    <textarea id="confession-input" placeholder="Berikan Curhatan Kamu..."></textarea>
+    <button id="submit-confession">Kirim Confession</button>
+    <p><a href="confession-room.html">See All Confession</a></p>
+  </div>
+
+  <script>
+    document.getElementById('submit-confession').addEventListener('click', function() {
+      const confessionInput = document.getElementById('confession-input');
+      const confessionText = confessionInput.value;
+
+      if (confessionText.trim() === '') {
+        alert('Confession tidak boleh kosong!');
+        return;
+      }
+
+      // Get existing confessions from localStorage or initialize as an empty array
+      let confessions = JSON.parse(localStorage.getItem('confessions')) || [];
+
+      // Create new confession object
+      const date = new Date();
+      const formattedDate = date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+      const confessionData = {
+        text: confessionText,
+        date: formattedDate,
+      };
+
+      // Add new confession to the list
+      confessions.push(confessionData);
+
+      // Save updated confessions back to localStorage
+      localStorage.setItem('confessions', JSON.stringify(confessions));
+
+      // Clear the input field
+      confessionInput.value = '';
+      alert('Confession berhasil dikirim!');
+    });
+  </script>
+</body>
+</html>

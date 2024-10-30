@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffe0f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: linear-gradient(to right, #fbc2eb, #a6c1ee);
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #ff69b4;
+    margin-bottom: 20px;
+}
+
+.confession {
+    background-color: #fff0f6;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.confession p {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.timestamp {
+    font-size: 0.9em;
+    color: #999;
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+}
+
+.reaction-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+button.reaction {
+    background-color: #fff;
+    border: 2px solid #ffb6c1;
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+button.reaction:hover {
+    transform: scale(1.2);
+}
+
+.reaction-count {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #555;
+}
